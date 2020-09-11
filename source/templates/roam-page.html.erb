@@ -1,0 +1,20 @@
+---
+layout: layout
+---
+<div class="container">
+  <article class="roam-page">
+    <h1><%= current_page.data[:title] %></h1>
+    <%= render_page_content(current_page.data[:page]) %>
+
+    <% if (inbound_references = Hash(current_page.data[:page]["inbound_page_references"])).any? %>
+    <section class="roam-references">
+      <h2>References</h2>
+      <ul>
+        <% inbound_references.each_pair do |title, page| %>
+          <li><%= link_to(title, "/#{string_to_slug(title)}") %></li>
+        <% end %>
+      </ul>
+    </secton>
+    <% end %>
+  </article>
+</div>

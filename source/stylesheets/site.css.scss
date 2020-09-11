@@ -1,0 +1,123 @@
+@import 'reset';
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+  background-color: #fff;
+  color: #222;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 16px;
+}
+
+a {
+  &, &:active, &:visited {
+    color: rgb(0, 0, 238);
+    text-decoration: underline;
+  }
+
+  &:hover {
+    color: rgb(26, 26, 166);
+    text-decoration: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
+
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.2rem; }
+
+p {
+  line-height: 1.3rem;
+}
+
+body > header {
+  margin: 2rem 0;
+
+  pre {
+    margin-bottom: 0.5rem;
+  }
+
+  nav {
+    li {
+      display: inline-block;
+      margin-right: 1rem;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.page-metadata {
+  font-weight: bold;
+}
+
+.page-tag a {
+  &, &:active, &:visited {
+    color: #999;
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: #666;
+  }
+}
+
+.page-ref a {
+  &, &:active, &:visited, &:active {
+    text-decoration: none;
+  }
+}
+
+.roam-page {
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #666;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+
+  >ul {
+    >li {
+      margin-top: 1rem;
+    }
+
+    >li >ul {
+      margin-left: 1.8rem;
+    }
+
+    ul {
+      list-style-type: disc;
+      list-style-position: outside;
+
+      margin-left: 1rem;
+    }
+  }
+
+  ul {
+    margin-bottom: 1rem;
+  }
+
+  li {
+    margin-top: 0.5rem;
+  }
+}
+
+.content {
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
