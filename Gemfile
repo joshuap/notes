@@ -10,3 +10,5 @@ gem "standard", "~> 0.6.0"
 gem "pry", "~> 0.13.1"
 
 gem "redcarpet", "~> 3.5"
+
+gem "middleman-livereload", "~> 3.4"

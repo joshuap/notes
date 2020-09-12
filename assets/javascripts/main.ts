@@ -1,10 +1,16 @@
+import Turbolinks from 'turbolinks'
+import './turbolinks-prefetch'
+
 import 'main.css'
 
 import { render, cancel } from 'timeago.js'
 
-(function () {
+document.addEventListener("turbolinks:load", function () {
   const nodes = document.querySelectorAll('.timeago')
-  console.log(nodes)
-  render(nodes, 'en_US')
-  cancel();
-})()
+  if (nodes.length > 0) {
+    render(nodes, 'en_US')
+    cancel()
+  }
+})
+
+Turbolinks.start()

@@ -25,6 +25,10 @@ set :markdown, fenced_code_blocks: true, autolink: true
 
 ignore "templates/*"
 
+configure :development do
+  activate :livereload
+end
+
 helpers do
   def build_time
     @build_time ||= Time.now.utc

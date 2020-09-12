@@ -15,7 +15,7 @@ module RoamHelpers
             if (ref = Hash(block["outbound_block_references"])[uid])
               render_markdown(
                 content_tag(:span, class: "block-ref") {
-                  link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}")
+                  link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
                 }
               )
             else
@@ -34,9 +34,9 @@ module RoamHelpers
     string = string.dup
 
     refs.each_pair do |title, page|
-      string.gsub!(/(?<!#)\[\[#{Regexp.escape(title)}\]\]/, %(<span class="page-ref"><a href="/#{string_to_slug(title)}">[[#{title}]]</a></span>))
-      string.gsub!(/#\[\[#{Regexp.escape(title)}\]\]/, %(<span class="page-tag"><a href="/#{string_to_slug(title)}">#[[#{title}]]</a></span>))
-      string.gsub!(/(?<=\s)#(?!\[)#{Regexp.escape(title)}/, %(<span class="page-tag"><a href="/#{string_to_slug(title)}">##{title}</a></span>))
+      string.gsub!(/(?<!#)\[\[#{Regexp.escape(title)}\]\]/, %(<span class="page-ref"><a data-prefetch="true" href="/#{string_to_slug(title)}">[[#{title}]]</a></span>))
+      string.gsub!(/#\[\[#{Regexp.escape(title)}\]\]/, %(<span class="page-tag"><a data-prefetch="true" href="/#{string_to_slug(title)}">#[[#{title}]]</a></span>))
+      string.gsub!(/(?<=\s)#(?!\[)#{Regexp.escape(title)}/, %(<span class="page-tag"><a data-prefetch="true" href="/#{string_to_slug(title)}">##{title}</a></span>))
     end
 
     string.gsub!(/(?<name>[\w\s]+)::\s/) { |_match| %(<span class="page-metadata">#{$1}:</span> ) }

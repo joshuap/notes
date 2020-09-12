@@ -8,6 +8,7 @@
     <!-- Use the title from a page's frontmatter if it has one -->
     <title><%= current_page.data.title || "Joshua Wood" %></title>
     <%= stylesheet_link_tag "main" %>
+    <%= javascript_include_tag "main" %>
   </head>
   <body>
     <header>
@@ -23,8 +24,8 @@
 </pre>
         <nav>
           <ul>
-            <li><%= link_to "Home", "/" %></li>
-            <li><%= link_to "About", "/about" %></li>
+            <li><%= link_to "Home", "/", data: {prefetch: true} %></li>
+            <li><%= link_to "About", "/about", data: {prefetch: true} %></li>
             <% if current_page.path == 'index.html' %>
             <li class="muted">Updated <span class="timeago" datetime="<%= build_time %>"><%= build_time.strftime("%B #{build_time.day.ordinalize}, %Y %H:%M") %></span></li>
             <% end %>
@@ -33,6 +34,5 @@
       </div>
     </header>
     <%= yield %>
-    <%= javascript_include_tag "main" %>
   </body>
 </html>
