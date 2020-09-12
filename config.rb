@@ -19,6 +19,12 @@ set :markdown, fenced_code_blocks: true, autolink: true
 
 ignore "templates/*"
 
+helpers do
+  def build_time
+    @build_time ||= Time.now
+  end
+end
+
 ROAM_DAY_REGXP = /(?<month>January|February|March|April|May|June|July|August|September|October|November|December) (?<day>[0-9]{1,2})(?:[a-z]{2})?, (?<year>[0-9]{4})/
 ROAM_DB_NAME = File.basename(ENV["ROAM_URL"].to_s).presence || "roam-export.json"
 ROAM_PAGES = JSON.parse(File.read(File.expand_path("../db/#{ROAM_DB_NAME}.json", __FILE__)))
