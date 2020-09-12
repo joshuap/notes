@@ -81,8 +81,21 @@ body > header {
 }
 
 .page-ref a {
-  &, &:active, &:visited, &:active {
+  &, &:active, &:visited, &:hover {
     text-decoration: none;
+  }
+}
+
+.block-ref a {
+  display: block;
+  color: #222;
+  text-decoration: underline;
+  text-decoration-color: #ccc;
+
+  &:hover {
+    background-color: #f9f9f9;
+    text-decoration: none;
+    cursor: alias;
   }
 }
 

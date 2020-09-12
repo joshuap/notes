@@ -14,7 +14,9 @@ module RoamHelpers
             uid = Regexp.last_match[:uid]
             if (ref = Hash(block["outbound_block_references"])[uid])
               render_markdown(
-                link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", class: "block-ref")
+                content_tag(:span, class: "block-ref") {
+                  link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}")
+                }
               )
             else
               "((#{uid}))"
