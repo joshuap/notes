@@ -8,9 +8,15 @@ page "/*.xml", layout: false
 page "/*.json", layout: false
 page "/*.txt", layout: false
 
-set :css_dir, "stylesheets"
+set :css_dir, "/assets/stylesheets"
+set :js_dir, "/assets/javascripts"
 set :images_dir, "images"
-set :js_dir, "javascripts"
+
+activate :external_pipeline,
+  name: :webpack,
+  command: build? ? "./node_modules/webpack/bin/webpack.js --bail" : "./node_modules/webpack/bin/webpack.js --watch -d",
+  source: ".tmp/dist",
+  latency: 1
 
 activate :directory_indexes
 
@@ -21,7 +27,7 @@ ignore "templates/*"
 
 helpers do
   def build_time
-    @build_time ||= Time.now
+    @build_time ||= Time.now.utc
   end
 end
 

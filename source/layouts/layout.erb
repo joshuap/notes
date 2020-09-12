@@ -7,8 +7,7 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Use the title from a page's frontmatter if it has one -->
     <title><%= current_page.data.title || "Joshua Wood" %></title>
-    <%= stylesheet_link_tag "site" %>
-    <%= javascript_include_tag "site" %>
+    <%= stylesheet_link_tag "main" %>
   </head>
   <body>
     <header>
@@ -27,12 +26,13 @@
             <li><%= link_to "Home", "/" %></li>
             <li><%= link_to "About", "/about" %></li>
             <% if current_page.path == 'index.html' %>
-            <li class="muted" data-timestamp="<%= build_time %>">Updated <%= build_time.strftime("%B #{build_time.day.ordinalize}, %Y %H:%M") %></li>
+            <li class="muted">Updated <span class="timeago" datetime="<%= build_time %>"><%= build_time.strftime("%B #{build_time.day.ordinalize}, %Y %H:%M") %></span></li>
             <% end %>
           </ul>
         </nav>
       </div>
     </header>
     <%= yield %>
+    <%= javascript_include_tag "main" %>
   </body>
 </html>
