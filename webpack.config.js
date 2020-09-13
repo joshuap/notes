@@ -2,8 +2,6 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const devMode = process.env.NODE_ENV !== 'production';
-
 module.exports = {
   entry: {
     main: './assets/javascripts/main.ts',
@@ -21,6 +19,7 @@ module.exports = {
   output: {
     path: __dirname + '/.tmp/dist',
     filename: 'assets/javascripts/[name].js',
+    chunkFilename: 'assets/javascripts/[id].js',
   },
 
   module: {
@@ -61,8 +60,8 @@ module.exports = {
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: devMode ? 'assets/stylesheets/[name].css' : 'assets/stylesheets/[name].[hash].css',
-      chunkFilename: devMode ? 'assets/stylesheets/[id].css' : 'assets/stylesheets/[id].[hash].css',
+      filename: 'assets/stylesheets/[name].css',
+      chunkFilename: 'assets/stylesheets/[id].css',
     }),
     new CleanWebpackPlugin(),
   ],

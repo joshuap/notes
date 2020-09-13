@@ -28,6 +28,7 @@
   "scripts": {
     "fetch-roam": "npx ts-node scripts/fetch-roam.ts",
     "build": "./bin/middleman build",
-    "build:ci": "npm run fetch-roam && ./bin/middleman build --verbose"
+    "build:verbose": "./bin/middleman build --verbose",
+    "deploy": "export NODE_ENV=production; npm run fetch-roam && npm run build:verbose && ./scripts/deploy.sh"
   }
 }
