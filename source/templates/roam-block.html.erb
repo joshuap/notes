@@ -1,4 +1,13 @@
 ---
 layout: layout
 ---
-<%= render_page_content({"children" => [current_page.data[:block]]}) %>
+<div class="container">
+  <article class="roam-page">
+    <% if [1, 2, 3].include?(current_page.data[:block]["heading"]) %>
+      <h1><%= current_page.data[:block]["string"] %></h1>
+      <%= render_page_content(current_page.data[:block]) %>
+    <% else %>
+      <%= render_page_content({"children" => [current_page.data[:block]]}) %>
+    <% end %>
+  </article>
+</div>
