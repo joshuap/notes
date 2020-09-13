@@ -4,6 +4,7 @@ layout: layout
 <div class="container">
   <article class="roam-page">
     <% if [1, 2, 3].include?(current_page.data[:block]["heading"]) %>
+      <% current_page.data[:title] = current_page.data[:block]["string"] %>
       <h1><%= current_page.data[:block]["string"] %></h1>
       <%= render_page_content(current_page.data[:block]) %>
     <% else %>
