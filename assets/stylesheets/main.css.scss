@@ -42,6 +42,13 @@ body > header {
 
   pre {
     margin-bottom: 0.5rem;
+    font-size: 75%;
+  }
+
+  @media (min-width: 450px) {
+    pre {
+      font-size: 100%;
+    }
   }
 
   nav {
