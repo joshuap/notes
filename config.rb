@@ -30,8 +30,8 @@ configure :development do
 end
 
 helpers do
-  def build_time
-    @build_time ||= Time.now.utc
+  def last_updated
+    LAST_UPDATED
   end
 end
 
@@ -47,13 +47,17 @@ INBOUND_PAGE_REFERENCES = {}
 OUTBOUND_BLOCK_REFERENCES = {}
 INBOUND_BLOCK_REFERENCES = {}
 
+last_updated = nil
+
 # First pass: generate reference tables
 ROAM_PAGES.each do |page|
   PAGES_BY_TITLE[page["title"]] = page.dup
+  last_updated = page["edit-time"] if page["edit-time"] > last_updated.to_i
   children = Array(page["children"]).dup
   while (child = children.pop)
     children |= Array(child["children"])
     child["page_title"] = page["title"]
+    last_updated = child["edit-time"] if child["edit-time"] > last_updated.to_i
 
     BLOCKS_BY_UID[child["uid"]] = child.dup
     PAGES_BY_UID[child["uid"]] = page.dup
@@ -119,3 +123,5 @@ ROAM_PAGES.each do |page|
 
   proxy "/#{slug}/index.html", "templates/roam-page.html", data: data
 end
+
+LAST_UPDATED = last_updated ? Time.at(0, last_updated, :millisecond) : nil

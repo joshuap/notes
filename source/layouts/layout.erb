@@ -26,8 +26,8 @@
           <ul>
             <li><%= link_to "Home", "/", data: {prefetch: true} %></li>
             <li><%= link_to "About", "/about", data: {prefetch: true} %></li>
-            <% if current_page.path == 'index.html' %>
-            <li class="muted">Updated <span class="timeago" datetime="<%= build_time %>"><%= build_time.strftime("%B #{build_time.day.ordinalize}, %Y %H:%M") %></span></li>
+            <% if current_page.path == 'index.html' && last_updated %>
+            <li class="muted">Updated <span class="timeago" datetime="<%= last_updated %>"><%= last_updated.strftime("%B #{last_updated.day.ordinalize}, %Y %H:%M") %></span></li>
             <% end %>
           </ul>
         </nav>
