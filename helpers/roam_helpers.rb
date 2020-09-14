@@ -67,4 +67,22 @@ module RoamHelpers
     return string unless /\S/.match?(string)
     Tilt["markdown"].new(context: @app, fenced_code_blocks: true, autolink: true) { string }.render
   end
+
+  def has_content?(block)
+    Array(block["children"]).each do |child|
+      return true if child["string"].present? || has_content?(child)
+    end
+
+    false
+  end
+
+  def daily_notes
+    sitemap
+      .resources
+      .select { |r|
+        r.data[:type] == :roam_daily_note &&
+          has_content?(r.data[:page])
+      }
+      .sort { |a, b| b.data[:date] <=> a.data[:date] }
+  end
 end

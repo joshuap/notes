@@ -4,8 +4,7 @@ title: Josh's Notes
 
 <div class="container">
 
-  <% resources = sitemap.resources.select {|r| r.data[:type] == :roam_daily_note && Array(r.data[:page]["children"]).any? }.sort {|a, b| b.data[:date] <=> a.data[:date] } %>
-  <% resources.each_with_index do |resource, index| %>
+  <% daily_notes.each_with_index do |resource, index| %>
     <article class="roam-page">
       <h1><%= resource.data[:title] %></h1>
       <%= render_page_content(resource.data[:page]) %>
