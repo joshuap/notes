@@ -1,45 +1,52 @@
 module RoamHelpers
+  def block_class(block)
+    case block["heading"]
+    when 1
+      "roam-text roam-text--heading roam-text--heading--1"
+    when 2
+      "roam-text roam-text--heading roam-text--heading--2"
+    when 3
+      "roam-text roam-text--heading roam-text--heading--3"
+    else
+      "roam-text roam-text--normal"
+    end
+  end
+
   def render_page_content(data, page = data)
     children = Array(data["children"])
     return "" if children.empty?
-    content_tag(:ul) do
+
+    content_tag(:ul) {
       children.map { |block|
         content_tag(:li, id: "block-#{block["uid"]}") {
-          content_tag(
-            case block["heading"]
-            when 1
-              :h2
-            when 2
-              :h3
-            when 3
-              :h4
-            else
-              :span
-            end
-          ) {
-            render_markdown(
-              link_tokens(
-                block["string"].to_s,
-                page
-              )
-            ).gsub(/\(\((?<uid>[^()]+)\)\)/) {
-              uid = Regexp.last_match[:uid]
-              if (ref = Hash(block["outbound_block_references"])[uid])
-                render_markdown(
-                  content_tag(:span, class: "block-ref") {
-                    link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
-                  }
-                )
-              else
-                "((#{uid}))"
-              end
-            }.gsub(/\^\^(?<text>[^\^]+)\^\^/) {
-              content_tag(:span, Regexp.last_match[:text], class: "roam-highlight")
-            }.delete("```") # RedCarpet leaves the trailing ``` from Roam when code blocks don't end in a new line.
-          } + render_page_content(block, page)
+          render_block(block, page) + render_page_content(block, page)
         }
       }.join
-    end
+    }
+  end
+
+  def render_block(block, page)
+    content_tag(:div, class: block_class(block)) {
+      render_markdown(
+        link_tokens(
+          block["string"].to_s,
+          page
+        )
+      ).gsub(/\(\((?<uid>[^()]+)\)\)/) {
+        uid = Regexp.last_match[:uid]
+        if (ref = Hash(block["outbound_block_references"])[uid])
+          render_markdown(
+            content_tag(:span, class: "block-ref") {
+              link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
+            }
+          )
+        else
+          "((#{uid}))"
+        end
+      }.gsub(/\^\^(?<text>[^\^]+)\^\^/) {
+        content_tag(:span, Regexp.last_match[:text], class: "roam-highlight")
+      }.delete("```") # RedCarpet leaves the trailing ``` from Roam when code blocks don't end in a new line.
+    }
   end
 
   def link_tokens(string, page)
@@ -65,7 +72,7 @@ module RoamHelpers
 
   def render_markdown(string)
     return string unless /\S/.match?(string)
-    Tilt["markdown"].new(context: @app, fenced_code_blocks: true, autolink: true) { string }.render
+    Tilt["markdown"].new(context: @app, fenced_code_blocks: true, autolink: true, hard_wrap: true) { string }.render
   end
 
   def has_content?(block)

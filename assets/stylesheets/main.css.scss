@@ -22,6 +22,7 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
+  line-height: 1.8rem;
 }
 
 h1 { font-size: 1.8rem; }
@@ -34,7 +35,7 @@ strong {
 }
 
 p {
-  line-height: 1.3rem;
+  line-height: 1.5rem;
 }
 
 code {
@@ -130,6 +131,18 @@ body > header {
 
 .roam-highlight {
   background-color: yellow;
+}
+
+.roam-text {
+  &--heading {
+    p {
+      line-height: 2rem;
+    }
+
+    &--1 { font-size: 1.6rem; }
+    &--2 { font-size: 1.4rem; }
+    &--3 { font-size: 1.2rem; font-weight: bold; }
+  }
 }
 
 .roam-page {
