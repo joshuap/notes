@@ -49,7 +49,7 @@ INBOUND_BLOCK_REFERENCES = {}
 
 last_updated = nil
 
-# First pass: generate reference tables
+# First pass: generate resource maps
 ROAM_PAGES.each do |page|
   PAGES_BY_TITLE[page["title"]] = page.dup
   last_updated = page["edit-time"] if page["edit-time"] > last_updated.to_i
@@ -61,6 +61,14 @@ ROAM_PAGES.each do |page|
 
     BLOCKS_BY_UID[child["uid"]] = child.dup
     PAGES_BY_UID[child["uid"]] = page.dup
+  end
+end
+
+# Second pass: generate reference maps
+ROAM_PAGES.each do |page|
+  children = Array(page["children"]).dup
+  while (child = children.pop)
+    children |= Array(child["children"])
 
     # Store page references
     [
@@ -89,7 +97,7 @@ ROAM_PAGES.each do |page|
   end
 end
 
-# Second pass: link references and generate pages
+# Third pass: link references and generate pages
 ROAM_PAGES.each do |page|
   # Link references
   page["inbound_page_references"] = Array(INBOUND_PAGE_REFERENCES[page["title"]]).map { |title| [title, PAGES_BY_TITLE[title]] }.to_h
