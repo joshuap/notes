@@ -28,10 +28,12 @@ module RoamHelpers
   def render_block(block, page)
     content_tag(:div, class: block_class(block)) {
       render_markdown(
-        link_tokens(
+        link_refs(
           block["string"].to_s,
           page
-        )
+        ).gsub(/(?<name>[\w\s]+)::\s/) { |_match|
+          %(<span class="page-metadata">#{$1}:</span> )
+        }
       ).gsub(/\(\((?<uid>[^()]+)\)\)/) {
         uid = Regexp.last_match[:uid]
         if (ref = Hash(block["outbound_block_references"])[uid])
@@ -49,7 +51,7 @@ module RoamHelpers
     }
   end
 
-  def link_tokens(string, page)
+  def link_refs(string, page)
     refs = Hash(page["outbound_page_references"])
     return string unless refs.any?
 
@@ -60,8 +62,6 @@ module RoamHelpers
       string.gsub!(/#\[\[#{Regexp.escape(title)}\]\]/, %(<span class="page-tag"><a data-prefetch="true" href="/#{string_to_slug(title)}">#[[#{title}]]</a></span>))
       string.gsub!(/(?<=\s)#(?!\[)#{Regexp.escape(title)}/, %(<span class="page-tag"><a data-prefetch="true" href="/#{string_to_slug(title)}">##{title}</a></span>))
     end
-
-    string.gsub!(/(?<name>[\w\s]+)::\s/) { |_match| %(<span class="page-metadata">#{$1}:</span> ) }
 
     string
   end
