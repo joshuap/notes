@@ -31,8 +31,8 @@ module RoamHelpers
         link_refs(
           block["string"].to_s,
           page
-        ).gsub(/(?<name>[\w\s]+)::\s/) { |_match|
-          %(<span class="page-metadata">#{$1}:</span> )
+        ).gsub(/\A(?<name>[\w\s]+)::/) { |_match|
+          %(<span class="page-metadata">#{$1}:</span>)
         }
       ).gsub(/\(\((?<uid>[^()]+)\)\)/) {
         uid = Regexp.last_match[:uid]
