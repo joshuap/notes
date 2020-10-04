@@ -55,6 +55,16 @@ code {
     font-size: inherit;
   }
 
+blockquote {
+  background: #f4f4f4;
+  border-left: 10px solid #e0e0e0;
+  padding: 0.5rem 10px;
+
+  p {
+    display: inline;
+  }
+}
+
 body > header {
   margin: 2rem 0;
 
@@ -134,7 +144,7 @@ body > header {
 }
 
 .roam-text {
-  p {
+  p, blockquote {
     margin-bottom: 0.5rem;
   }
 
