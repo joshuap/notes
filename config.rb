@@ -1,4 +1,5 @@
 require "pry"
+require "logger"
 
 activate :autoprefixer do |prefix|
   prefix.browsers = "last 2 versions"
@@ -135,3 +136,7 @@ ROAM_PAGES.each do |page|
 end
 
 LAST_UPDATED = last_updated ? Time.at(0, last_updated, :millisecond) : nil
+
+# Disables hashie key conflict warnings. I'd like to fix the warnings
+# eventually, but whatever.
+Hashie.logger = ::Logger.new("/dev/null")
