@@ -5,7 +5,7 @@ title: Josh's Notes
 <div class="container daily-notes">
   <% daily_notes.each_with_index do |resource, index| %>
     <article class="roam-page">
-      <h1><%= resource.data[:title] %></h1>
+      <h1><%= link_to(resource.data[:title], resource.data[:page]["permalink"], title: "Permalink to page") %></h1>
       <%= render_page_content(resource.data[:page]) %>
     </article>
   <% end %>

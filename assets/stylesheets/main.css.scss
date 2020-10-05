@@ -60,8 +60,8 @@ blockquote {
   border-left: 10px solid #e0e0e0;
   padding: 0.5rem 10px;
 
-  p {
-    display: inline;
+  p:last-of-type {
+    margin-bottom: 0;
   }
 }
 
@@ -143,28 +143,6 @@ body > header {
   background-color: yellow;
 }
 
-.roam-text {
-  p, blockquote {
-    margin-bottom: 0.5rem;
-  }
-
-  &--heading {
-    p {
-      line-height: 2rem;
-    }
-
-    &--1 { font-size: 1.6rem; }
-    &--2 { font-size: 1.4rem; }
-    &--3 { font-size: 1.2rem; font-weight: bold; }
-  }
-
-  .daily-notes & {
-    &--heading {
-      margin-top: 1rem;
-    }
-  }
-}
-
 .roam-page {
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
@@ -180,6 +158,60 @@ body > header {
     list-style-position: outside;
 
     margin-left: 1.5rem;
+  }
+
+  .page-meta {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 a, .roam-text--heading a, .page-meta a {
+    &, &:active, &:visited {
+      color: #222;
+      text-decoration: none;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.roam-text {
+  p, blockquote {
+    margin-bottom: 0.5rem;
+  }
+
+  &--heading {
+    margin-top: 1rem;
+
+    p {
+      line-height: 2rem;
+    }
+
+    &--1 { font-size: 1.6rem; }
+    &--2 { font-size: 1.4rem; }
+    &--3 { font-size: 1.2rem; font-weight: bold; }
+  }
+
+  a.block-permalink {
+    font-size: 1rem;
+    margin-left: 0.5rem;
+
+    visibility: hidden;
+
+    &, &:active, &:visited {
+      color: #ffc0cb;
+      text-decoration: none;
+    }
+
+    &:hover {
+      color: #666;
+    }
+  }
+
+  &:hover a.block-permalink {
+    visibility: visible;
   }
 }
 

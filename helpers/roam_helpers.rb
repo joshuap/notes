@@ -20,9 +20,7 @@ module RoamHelpers
       if block["heading"]
         render_block(block, page) + render_page_content(block, page)
       else
-        render_block(block, page) {
-          render_list(block, page)
-        }
+        render_block(block, page) + render_list(block, page)
       end
     }.join.html_safe
   end
@@ -41,33 +39,63 @@ module RoamHelpers
   end
 
   def render_block(block, page)
-    content = render_markdown(
-      link_refs(
+    content = if block["heading"].present?
+      render_heading(block)
+    else
+      inner_content = link_refs(
         block["string"].to_s,
         page
       ).gsub(/\A(?<name>[\w\s]+)::/) { |_match|
         %(<span class="page-metadata">#{$1}:</span>)
+      }.gsub(/(?<!\s)```$/) { |_match|
+        %(\n```\n) # Add newline before/after terminating code blocks
       }
-    ).gsub(/\(\((?<uid>[^()]+)\)\)/) {
-      uid = Regexp.last_match[:uid]
-      if (ref = Hash(block["outbound_block_references"])[uid])
-        render_markdown(
-          content_tag(:span, class: "block-ref") {
-            link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
-          }
-        )
-      else
-        "((#{uid}))"
+
+      if block["permalink"].present?
+        inner_content << link_to("#", block["permalink"], class: "block-permalink", title: "Permalink to block")
       end
-    }.gsub(/\^\^(?<text>[^\^]+)\^\^/) {
-      content_tag(:span, Regexp.last_match[:text], class: "roam-highlight")
-    }.delete("```") # RedCarpet leaves the trailing ``` from Roam when code blocks don't end in a new line.
+
+      render_markdown(inner_content)
+        .gsub(/\(\((?<uid>[^()]+)\)\)/) {
+          uid = Regexp.last_match[:uid]
+          if (ref = Hash(block["outbound_block_references"])[uid])
+            render_markdown(
+              content_tag(:span, class: "block-ref") {
+                link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
+              }
+            )
+          else
+            "((#{uid}))"
+          end
+        }.gsub(/\^\^(?<text>[^\^]+)\^\^/) {
+          content_tag(:span, Regexp.last_match[:text], class: "roam-highlight")
+        }
+    end
 
     content << yield if block_given?
 
     content_tag(:div, id: "block-#{block["uid"]}", class: block_class(block)) {
       content
     }
+  end
+
+  def render_heading(block)
+    content = case block["heading"]
+    when 1
+      if block["permalink"].present?
+        link_to(block["string"], block["permalink"])
+      else
+        block["string"]
+      end
+    else
+      block["string"]
+    end
+
+    if block["permalink"].present?
+      content << link_to("#", block["permalink"], class: "block-permalink", title: "Permalink to block")
+    end
+
+    content_tag(:p, content)
   end
 
   def link_refs(string, page)

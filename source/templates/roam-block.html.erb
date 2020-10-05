@@ -5,10 +5,11 @@ layout: layout
   <article class="roam-page">
     <% if [1, 2, 3].include?(current_page.data[:block]["heading"]) %>
       <% current_page.data[:title] = current_page.data[:block]["string"] %>
-      <h1><%= current_page.data[:block]["string"] %></h1>
-      <%= render_page_content(current_page.data[:block]) %>
+      <div class="page-meta"><%= link_to(current_page.data[:page]["title"], current_page.data[:page]["permalink"]) %></div>
+      <h1><%= link_to(current_page.data[:block]["string"], current_page.data[:block]["permalink"]) %></h1>
+      <%= render_page_content(current_page.data[:block], current_page.data[:page]) %>
     <% else %>
-      <%= render_page_content({"children" => [current_page.data[:block]]}) %>
+      <%= render_page_content({"children" => [current_page.data[:block]]}, current_page.data[:page]) %>
     <% end %>
   </article>
 </div>
