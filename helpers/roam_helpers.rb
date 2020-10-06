@@ -59,11 +59,9 @@ module RoamHelpers
         .gsub(/\(\((?<uid>[^()]+)\)\)/) {
           uid = Regexp.last_match[:uid]
           if (ref = Hash(block["outbound_block_references"])[uid])
-            render_markdown(
-              content_tag(:span, class: "block-ref") {
-                link_to(ref["string"], "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
-              }
-            )
+            content_tag(:span, class: "block-ref") {
+              link_to(render_markdown(ref["string"], no_links: true).gsub(/<\/?p>/, ""), "/#{string_to_slug(ref["page_title"])}#block-#{uid}", data: {prefetch: true})
+            }
           else
             "((#{uid}))"
           end
@@ -117,9 +115,9 @@ module RoamHelpers
     string.parameterize
   end
 
-  def render_markdown(string)
+  def render_markdown(string, no_links: false)
     return string unless /\S/.match?(string)
-    Tilt["markdown"].new(context: @app, fenced_code_blocks: true, autolink: true, hard_wrap: true) { string }.render
+    Tilt["markdown"].new(context: @app, fenced_code_blocks: true, autolink: true, hard_wrap: true, no_links: no_links) { string }.render
   end
 
   def has_content?(block)
